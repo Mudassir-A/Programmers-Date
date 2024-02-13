@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-image: url('/valentines.jpg');
+      /* Specify the URL of your background image */
+      background-size: cover;
+      /* Cover the entire viewport */
+      background-position: center;
+      /* Center the background image */
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-top: 20px;
+      color: black;
+      /* Set the color to black */
+      font-family: 'Garamond', serif;
+      /* Use a custom font */
+      font-size: 36px;
+      /* Set the font size */
+    }
+
+    .gif-container {
+      width: 100%;
+      max-width: 500px;
+      /* Adjust the max-width as needed */
+      height: 400px;
+      margin-top: 20px;
+      background-image: url('/heart-love.gif');
+      /* Specify the URL of your first GIF */
+      background-size: contain;
+      /* Ensure the GIF fits within the container */
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .gif-container.hidden {
+      display: none;
+    }
+
+    .btn-container {
+      margin-top: 20px;
+    }
+
+    #yesBtn {
+      background-color: #4CAF50;
+      /* Green */
+    }
+
+    #noBtn {
+      background-color: #f44336;
+      /* Red */
+    }
+
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .btn:not(:last-child) {
+      margin-right: 10px;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    .shifted {
+      transform: translateX(100px);
+      /* Shift the button to the right */
+    }
+  </style>
+</head>
+
+<body>
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="love_song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="gif-container" id="firstGifContainer"></div> <!-- Container for the first GIF -->
+  <div class="gif-container hidden" id="secondGifContainer"></div> <!-- Container for the second GIF -->
+  <h1 id="heading">Will You Be My Valentine?</h1>
+  <div class="btn-container" id="btnContainter">
+    <button id="yesBtn" class="btn">Yes</button>
+    <button id="noBtn" class="btn">No</button>
+  </div>
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const btnContainter = document.getElementById('btnContainter')
+    const firstGifContainer = document.getElementById('firstGifContainer');
+    const secondGifContainer = document.getElementById('secondGifContainer');
+
+    let marginLeftIncrement = 0;
+    let size = 1;
+
+    noBtn.addEventListener('click', () => {
+      const currentSizeYes = window.getComputedStyle(yesBtn).getPropertyValue('font-size');
+      const currentSizeNo = window.getComputedStyle(noBtn).getPropertyValue('font-size');
+      const newSize = parseInt(currentSizeYes) + 12 + 'px';
+      const minSize = parseInt(currentSizeNo) - 1.05 + 'px'
+      yesBtn.style.fontSize = newSize;
+      noBtn.style.fontSize = minSize;
+
+      // Change text on 'No' button
+      const buttonText = ['No', 'Are you sure?', 'Really sure?', 'Think again', 'Last chance', 'surely not', 'you might regret this', 'Give it another thought', 'Absolute certain?', 'This could be a mistake', 'Have a heart ', 'dont be so cold', 'is that your final answer?'];
+      const currentText = noBtn.textContent;
+      const newText = buttonText[(buttonText.indexOf(currentText) + 1) % buttonText.length];
+      noBtn.textContent = newText;
+
+      // Increase left margin of 'No' button on each click
+      marginLeftIncrement += 100;
+      noBtn.style.marginLeft = `${marginLeftIncrement}px`;
+      btnContainter.style.marginLeft = `${marginLeftIncrement - 5}px`;
+
+    });
+
+    yesBtn.addEventListener('click', () => {
+      // Hide the heading and buttons, and show the second GIF container
+      // document.querySelector('h1').style.display = 'none';
+      const backgroundMusic = document.getElementById('backgroundMusic');
+      backgroundMusic.play();
+
+      document.querySelector('.btn-container').style.display = 'none';
+      firstGifContainer.classList.add('hidden');
+      secondGifContainer.classList.remove('hidden');
+      secondGifContainer.style.backgroundImage = "url('/thor-thor-and-jane yessss.gif')"; // Specify the URL of your second GIF
+
+      // Create a video element
+      const videoElement = document.createElement('video');
+      videoElement.src = 'bg.mp4'; // Set the source of the video file
+
+      // Set attributes for the video element
+      videoElement.autoplay = true;
+      videoElement.loop = true;
+      videoElement.muted = true;
+      videoElement.style.position = 'fixed';
+      videoElement.style.top = '0';
+      videoElement.style.left = '0';
+      videoElement.style.minWidth = '100%';
+      videoElement.style.minHeight = '100%';
+      videoElement.style.zIndex = '-1';
+
+      // Append the video element to the body
+      document.body.appendChild(videoElement);
+
+      // Remove the background image from the body
+      document.body.style.backgroundImage = 'none';
+
+      document.getElementById('heading').innerHTML = "Thanks!! 😁🥹👉👈"
+
+    });
+
+    setInterval(() => { secondGifContainer.style.transform = `scale(${size * 1.4})` }, 10);
+
+  </script>
+
+
+</body>
+
+</html>
